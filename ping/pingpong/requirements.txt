@@ -3,3 +3,4 @@ channels
 daphne
 djangorestframework
 django-cors-headers
+channels_redis

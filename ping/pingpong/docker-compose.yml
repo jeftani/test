@@ -9,3 +9,10 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6380:6379"  # Expose Redis on port 6380 on your local machine

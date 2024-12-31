@@ -4,6 +4,8 @@ from rest_framework import status
 from django.urls import reverse
 import random
 import string
+from .models import Room  # Make sure to import your Room model
+
 
 class CreateRoomAPIView(APIView):
     def post(self, request, *args, **kwargs):
@@ -19,14 +21,21 @@ class CreateRoomAPIView(APIView):
             letters_and_digits = string.ascii_letters + string.digits
             return ''.join(random.choice(letters_and_digits) for _ in range(length))
 
-        room_name = generate_room_code()
+        room_code = generate_room_code()
+
+        # Create the room object and save it to the database
+        room = Room.objects.create(
+            room_id=room_code,
+            player1_name=player1,
+            player2_name=player2,
+        )
 
         # Construct WebSocket URL
-        ws_url = reverse('game:game_ws', kwargs={'room_code': room_name})
+        ws_url = reverse('game:game_ws', kwargs={'room_code': room_code})
 
-        # Send WebSocket URL back to both players
+        # Send WebSocket URL and room details back to the players
         return Response({
             "message": "Room created successfully!",
-            "room_name": room_name,
+            "room_name": room_code,
             "ws_url": f"ws://127.0.0.1:8000{ws_url}"
         }, status=status.HTTP_201_CREATED)

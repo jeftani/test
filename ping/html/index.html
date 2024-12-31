@@ -371,9 +371,21 @@ joinExistingRoomButton.addEventListener('click', () => {
 
             socket.onmessage = (event) => 
             {
+               
                 const data = JSON.parse(event.data);
                 if (data.role) playerRole = data.role;
                 if (data.gameState) renderOnlineGame(data.gameState);
+                if (data.matchEnded) {
+                    const winner = data.winner;  // Get the winner
+                    const score = data.score;    // Get the score
+
+                    // Display the winner and score in an alert
+                    alert(`Game Over! ${winner} wins! Final score: Player 1: ${score.player1} - Player 2: ${score.player2}`);
+                    
+                    // Optionally, you can redirect the user or reset the game state after the alert
+                    // For example:
+                    // window.location.href = '/new-game';  // Redirect to a new game page
+                    }
             };
 
             function renderOnlineGame(gameState) {

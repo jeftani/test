@@ -79,16 +79,21 @@ WSGI_APPLICATION = 'pingpong.wsgi.application'
 ASGI_APPLICATION = "pingpong.asgi.application"
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5500',
+    'http://127.0.0.1:8080',
 ]
 
 
 
 CHANNEL_LAYERS = {
-   "default": {
-       "BACKEND": "channels.layers.InMemoryChannelLayer",
-   },
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],  # Use the Redis service name and port
+        },
+    },
 }
+
+
 
 
 
