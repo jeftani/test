@@ -1,0 +1,5 @@
+Django>=4.2,<5
+channels
+daphne
+djangorestframework
+django-cors-headers
